@@ -11,10 +11,7 @@
 #(((((faire des stats et les stocker dans du json)))))
 
 from tkinter import *
-
-board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-turn_bool = True
-tp = 0
+import ia
 
 def my_refactor(board):
     r = []
@@ -25,9 +22,10 @@ def my_refactor(board):
             r.append(i)
     return(r)
 
-def wining_condition(board, tp):
+def wining_condition(board):
     l = [0, 0, 0, 0, 0, 0, 0, 0]
     r_board = my_refactor(board)
+    test_egalité = 0
     l[0] = r_board[0] + r_board[1] + r_board[2]
     l[1] = r_board[3] + r_board[4] + r_board[5]
     l[2] = r_board[6] + r_board[7] + r_board[8]
@@ -44,14 +42,16 @@ def wining_condition(board, tp):
         elif i == -3:
             game_info.configure(text='Le joueur 2 a gagné')
             return(1)
-    if tp >= 9:
-        game_info.configure(text='Egalitée')
+    for j in r_board:
+        if j != 0:
+            test_egalité += 1
+    if test_egalité == 9:
+        game_info.configure(text='Egalité')
         return(2)
     return(-1)
 
-w = wining_condition(board, tp)        
-
 def check_clic(pos_tuple):
+
     pos_index = [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2)]
     global board
     for i in range(len(pos_index)):
@@ -66,40 +66,54 @@ def check_clic(pos_tuple):
             else:
                 return(False)
 
+def my_int_to_tuple(i):
+    pos_index = [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2)]
+    return(pos_index[i])
+
 def mouse_clic(event):
-        x = event.x // 100
-        y = event.y //100
-        global turn_bool
-        global tp
-        global w
-        if (w == -1):
-            if (turn_bool == True):
-                if(check_clic((x,y))):
-                    game_info.configure(text='Tour du joueur 2')
-                    ma_grille.create_line(100*x+5, 100*y+5, 100*x+95, 100*y+95, width=3)
-                    ma_grille.create_line(100*x+5, 100*y+95, 100*x+95, 100*y+5, width=3)
-                    turn_bool = False
-                    tp += 1
-            elif (turn_bool == False):
-                if(check_clic((x, y))):
-                    game_info.configure(text='Tour du joueur 1')
-                    ma_grille.create_oval(100*x+5, 100*y+5, 100*x+95, 100*y+95, width= 3)
-                    turn_bool = True
-                    tp += 1
-            w = wining_condition(board, tp)
+    global turn_bool, w, ia_bool, board
+    x = event.x // 100
+    y = event.y //100
+
+    if (w == -1):
+        if (turn_bool == True):
+            if(check_clic((x,y))):
+                game_info.configure(text='Tour du joueur 2')
+                ma_grille.create_line(100*x+5, 100*y+5, 100*x+95, 100*y+95, width=3)
+                ma_grille.create_line(100*x+5, 100*y+95, 100*x+95, 100*y+5, width=3)
+                turn_bool = False       
+        elif (turn_bool == False and ia_bool == False):
+            if (check_clic((x, y))):
+                game_info.configure(text='Tour du joueur 1')
+                ma_grille.create_oval(100*x+5, 100*y+5, 100*x+95, 100*y+95, width= 3)
+                turn_bool = True
+        w = wining_condition(board)
+        if (turn_bool == False and ia_bool == True and w == - 1):
+            i = ia.ia(board, 'O')
+            print('\n', i, '\n')
+            board[i] = 2
+            ia_tuple = my_int_to_tuple(i)
+            game_info.configure(text='Tour du joueur 1')
+            ma_grille.create_oval(100*ia_tuple[0]+5, 100*ia_tuple[1]+5, 100*ia_tuple[0]+95, 100*ia_tuple[1]+95, width= 3)
+            turn_bool = True
+    w = wining_condition(board)
 
 def my_restart():
-    global board, turn_bool, tp, w
+    global board, turn_bool, w
     board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    turn_bool = True
-    tp = 0
+    turn_bool = init_bool
     w = -1
     ma_grille.delete(ALL)
-
+    game_info.configure(text='Tour du joueur 1')
     for i in range(3):
         ma_grille.create_line(100 * i, 0, 100 * i, 300)
         ma_grille.create_line(0, 100 * i, 300, 100 * i)    
-    game_info = Label(wdw, text='Tour du joueur 1')
+    
+ia_bool = True
+board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+init_bool = False
+turn_bool = init_bool
+w = wining_condition(board)
 
 wdw = Tk()
 wdw.title('Tic-tac-toe')
@@ -110,8 +124,8 @@ for i in range(3):
     ma_grille.create_line(100 * i, 0, 100 * i, 300)
     ma_grille.create_line(0, 100 * i, 300, 100 * i)
 
-
 ma_grille.bind('<Button-1>', mouse_clic)
+
 game_info = Label(wdw, text='Tour du joueur 1')
 game_info.grid(row= 1, column = 0, )
     
