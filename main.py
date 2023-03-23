@@ -74,7 +74,7 @@ def my_int_to_tuple(i):
     return(pos_index[i])
 
 def mouse_clic(event):
-    global turn_bool, w, ia_bool, board
+    global turn_bool, w, board
     x = event.x // 100
     y = event.y //100
     if (w == -1):
@@ -100,9 +100,9 @@ def mouse_clic(event):
     w = wining_condition(board)
 
 def my_restart():
-    global board, turn_bool, w, init_bool
-    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    global board, w, turn_bool
     turn_bool = init_bool
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     w = -1
     ma_grille.delete(ALL)
     game_info.configure(text='Tour du joueur 1')
@@ -137,8 +137,9 @@ def launch_game():
     game()
 
 def launch_ia_first():
-    global init_bool
+    global init_bool, turn_bool
     init_bool = False
+    turn_bool = False
     bouton_ia_first.destroy()
     bouton_ia_second.destroy()
     game()
@@ -155,7 +156,7 @@ def ia_menu():
     bouton_solo.destroy()
     bouton_ia_first = Button(wdw, text="Jouer en premier", command=launch_ia_second)
     bouton_ia_first.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
-    bouton_ia_second = Button(wdw, text='Jouer en deuxieme', command=launch_ia_first)
+    bouton_ia_second = Button(wdw, text='Jouer en deuxieme\nfaites un premier clic pour demarer la partie puis attendez que le rond se place', command=launch_ia_first)
     bouton_ia_second.grid(row = 4, padx=3, pady=3, sticky = S+W+E)
 
 
@@ -164,7 +165,7 @@ wdw.title('Tic-tac-toe')
 ia_bool = False
 board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 init_bool = True
-turn_bool = init_bool
+turn_bool = True
 w = wining_condition(board)
 
 bouton_solo = Button(wdw, text="Jouer contre un autre joueur", command=launch_game)
