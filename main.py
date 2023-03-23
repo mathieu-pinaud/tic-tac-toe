@@ -172,5 +172,4 @@ bouton_solo.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
 bouton_ia = Button(wdw, text='Jouer contre une ia', command=ia_menu)
 bouton_ia.grid(row = 0, padx=3, pady=3, sticky = S+W+E)
 
-main_menu()
 wdw.mainloop()
