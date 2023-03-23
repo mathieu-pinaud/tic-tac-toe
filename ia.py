@@ -46,7 +46,6 @@ def ia(board, signe):
         if (board[i] == 0):
             board[i] = tmp
             prob = my_minimax(board, nw_sign)
-            print(i, prob)
             board[i] = 0
             if (signe == 'X' and prob <  best_prob):
                 best_i = i
