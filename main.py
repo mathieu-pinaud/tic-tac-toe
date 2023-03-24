@@ -154,9 +154,9 @@ def ia_menu():
     ia_bool = True
     bouton_ia.destroy()
     bouton_solo.destroy()
-    bouton_ia_first = Button(wdw, text="Jouer en premier", command=launch_ia_second)
+    bouton_ia_first = Button(wdw, text="Jouer en premier", command=launch_ia_second, height=5, width= 60)
     bouton_ia_first.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
-    bouton_ia_second = Button(wdw, text='Jouer en deuxieme\nfaites un premier clic pour demarer la partie puis attendez que le rond se place', command=launch_ia_first)
+    bouton_ia_second = Button(wdw, text='Jouer en deuxieme\nfaites un premier clic pour demarer la partie puis attendez que le rond se place', command=launch_ia_first, height=5)
     bouton_ia_second.grid(row = 4, padx=3, pady=3, sticky = S+W+E)
 
 
@@ -168,9 +168,9 @@ init_bool = True
 turn_bool = True
 w = wining_condition(board)
 
-bouton_solo = Button(wdw, text="Jouer contre un autre joueur", command=launch_game)
+bouton_solo = Button(wdw, text="Jouer contre un autre joueur", command=launch_game, height=5, width=60)
 bouton_solo.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
-bouton_ia = Button(wdw, text='Jouer contre une ia', command=ia_menu)
+bouton_ia = Button(wdw, text='Jouer contre une ia', command=ia_menu, height=5)
 bouton_ia.grid(row = 0, padx=3, pady=3, sticky = S+W+E)
 
 wdw.mainloop()

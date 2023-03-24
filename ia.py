@@ -32,38 +32,27 @@ def wining_condition(board):
         return(2)
     return(-1)
 
+def board_empty(board):
+    for i in board:
+        if i != 0:
+            return(False)
+    return(True)
+
 def ia(board, signe):
-    if (signe == 'X'):
-        tmp = 1
-        nw_sign = 'O'
-        best_prob = 10
-    elif(signe == 'O'):
-        tmp = 2
-        nw_sign = 'X'
-        best_prob = -10
-   
-    for i in range(len(board)):
-        if (board[i] == 0):
-            board[i] = tmp
-            prob = my_minimax(board, nw_sign)
-            board[i] = 0
-            if (signe == 'X' and prob <  best_prob):
-                best_i = i
-                best_prob = prob
-            elif (signe == 'O' and prob > best_prob):
-                best_i = i
-                best_prob = prob
-    return(best_i)
+
+    if (board_empty(board)):
+        return(4)
+    return(my_minimax(board, signe)[0])
 
 def my_minimax(board, signe):
 
     v = wining_condition(board)
     if (v == 0):
-        return(-1)
+        return(None, -1)
     elif (v == 1):
-        return(1)
+        return(None, 1)
     elif (v == 2):
-        return(0) 
+        return(None, 0) 
     
     if (signe == 'X'):
         tmp = 1
@@ -77,10 +66,12 @@ def my_minimax(board, signe):
     for i in range(len(board)):
         if (board[i] == 0):
             board[i] = tmp
-            prob = my_minimax(board, nw_sign)
+            prob = my_minimax(board, nw_sign)[1]
             board[i] = 0
             if (signe == 'X' and prob <  best_prob):
                 best_prob = prob
+                best_i = i
             elif (signe == 'O' and prob > best_prob):
                 best_prob = prob
-    return(best_prob)
+                best_i = i
+    return((best_i ,best_prob))
