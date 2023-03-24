@@ -56,7 +56,6 @@ def wining_condition(board):
 def check_clic(pos_tuple):
 
     pos_index = [(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1), (0, 2), (1, 2), (2, 2)]
-    global board
     for i in range(len(pos_index)):
         if pos_index[i] == pos_tuple:
             if board[i] == 0:
@@ -110,11 +109,24 @@ def my_restart():
         ma_grille.create_line(100 * i, 0, 100 * i, 300)
         ma_grille.create_line(0, 100 * i, 300, 100 * i)    
 
+def new_menu():
+
+    global w, turn_bool, board
+    turn_bool = init_bool
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    w = -1
+    ma_grille.destroy()
+    game_info.destroy()
+    bouton_quitter.destroy()
+    bouton_reload.destroy()
+    bouton_menu.destroy()
+    my_menu()
+
 def game():
 
-    global ma_grille, game_info
+    global ma_grille, game_info, bouton_quitter, bouton_reload, bouton_menu
     ma_grille = Canvas(wdw, bg="white", width=301, height=301)
-    ma_grille.grid(row = 0, column = 0, columnspan = 2, padx=5, pady=5)
+    ma_grille.grid(row = 0, column = 0, columnspan = 3, pady=5)
     for i in range(3):
         ma_grille.create_line(100 * i, 0, 100 * i, 300)
         ma_grille.create_line(0, 100 * i, 300, 100 * i)
@@ -122,16 +134,18 @@ def game():
     ma_grille.bind('<Button-1>', mouse_clic)
 
     game_info = Label(wdw, text='Tour du joueur 1')
-    game_info.grid(row= 1, column = 0, )
+    game_info.grid(row= 1, column = 0, columnspan= 3)
     
-    bouton_quitter = Button(wdw, text='Quitter', command=wdw.destroy)
-    bouton_quitter.grid(row = 2, column = 1, padx=3, pady=3, sticky = S+W+E)
+    bouton_quitter = Button(wdw, text='Quitter', command=wdw.destroy, width = 20)
+    bouton_quitter.grid(row = 2, column = 2, pady=3, sticky = S+W+E)
 
-    bouton_reload = Button(wdw, text='Recommencer', command=my_restart)
-    bouton_reload.grid(row = 2, column = 0, padx=3, pady=3, sticky = S+W+E)
+    bouton_reload = Button(wdw, text='Recommencer', command=my_restart, width=20)
+    bouton_reload.grid(row = 2, column = 0, pady=3, sticky = S+W+E)
+
+    bouton_menu = Button(wdw, text='Menu', command=new_menu, width=20)
+    bouton_menu.grid(row = 2, column = 1, pady=3)
 
 def launch_game():
-    
     bouton_solo.destroy()
     bouton_ia.destroy()
     game()
@@ -155,10 +169,16 @@ def ia_menu():
     bouton_ia.destroy()
     bouton_solo.destroy()
     bouton_ia_first = Button(wdw, text="Jouer en premier", command=launch_ia_second, height=5, width= 60)
-    bouton_ia_first.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
+    bouton_ia_first.grid(row = 0, padx=3, pady=3, sticky = S+W+E)
     bouton_ia_second = Button(wdw, text='Jouer en deuxieme\nfaites un premier clic pour demarer la partie puis attendez que le rond se place', command=launch_ia_first, height=5)
-    bouton_ia_second.grid(row = 4, padx=3, pady=3, sticky = S+W+E)
+    bouton_ia_second.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
 
+def my_menu():
+    global bouton_solo, bouton_ia
+    bouton_solo = Button(wdw, text="Jouer contre un autre joueur", command=launch_game, height=5, width=60)
+    bouton_solo.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
+    bouton_ia = Button(wdw, text='Jouer contre une ia', command=ia_menu, height=5)
+    bouton_ia.grid(row = 0, padx=3, pady=3, sticky = S+W+E)
 
 wdw = Tk()
 wdw.title('Tic-tac-toe')
@@ -168,9 +188,5 @@ init_bool = True
 turn_bool = True
 w = wining_condition(board)
 
-bouton_solo = Button(wdw, text="Jouer contre un autre joueur", command=launch_game, height=5, width=60)
-bouton_solo.grid(row = 1, padx=3, pady=3, sticky = S+W+E)
-bouton_ia = Button(wdw, text='Jouer contre une ia', command=ia_menu, height=5)
-bouton_ia.grid(row = 0, padx=3, pady=3, sticky = S+W+E)
-
+my_menu()
 wdw.mainloop()

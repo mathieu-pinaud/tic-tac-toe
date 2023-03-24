@@ -32,16 +32,8 @@ def wining_condition(board):
         return(2)
     return(-1)
 
-def board_empty(board):
-    for i in board:
-        if i != 0:
-            return(False)
-    return(True)
-
 def ia(board, signe):
 
-    if (board_empty(board)):
-        return(4)
     return(my_minimax(board, signe)[0])
 
 def my_minimax(board, signe):
