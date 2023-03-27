@@ -1,14 +1,14 @@
-#Lire doc tkinter
-#se renseigner sur comment jouer en ligne
-#squelette du jeu
+# Lire doc tkinter
+# se renseigner sur comment jouer en ligne
+# squelette du jeu
 # Ouvrir une wdwetre ?
 # demander au joueur si il veut jouer en ligne
 # si oui connecter (2 versions a faire)  ???
 # si non demander si jeu en local J1/J2 (((ou J1/IA ?)))
 # (((((faire IA)))))
-#lancer jeu avec une boucle sur les conditions de victoire 
-#faires alterner les programes/joueurs
-#(((((faire des stats et les stocker dans du json)))))
+# lancer jeu avec une boucle sur les conditions de victoire 
+# faires alterner les programes/joueurs
+# (((((faire des stats et les stocker dans du json)))))
 
 from tkinter import *
 import ia
